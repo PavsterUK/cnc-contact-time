@@ -25,8 +25,8 @@
                      </font></Button>
                   <GridPane GridPane.columnIndex="1">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.0" minWidth="10.0" prefWidth="207.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="0.0" prefWidth="42.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="249.0" minWidth="10.0" prefWidth="249.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="0.0" prefWidth="0.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints maxHeight="41.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
@@ -34,14 +34,14 @@
                       <RowConstraints maxHeight="17.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <CheckBox fx:id="isOverwrite" mnemonicParsing="false" prefHeight="34.0" prefWidth="129.0" text="Overwrite NC" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <CheckBox fx:id="isOverwrite" mnemonicParsing="false" prefHeight="34.0" prefWidth="217.0" text="Overwrite NC File" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </CheckBox>
                      </children>
                   </GridPane>
-                  <Button fx:id="calculate" mnemonicParsing="false" prefHeight="126.0" prefWidth="249.0" text="CALCULATE" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Button fx:id="calculate" mnemonicParsing="false" prefHeight="126.0" prefWidth="249.0" text="ADD BREAKPOINTS" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -58,7 +58,7 @@
                     </rowConstraints>
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="OPERATION BLOCK Nr : " GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
-                        <TextField fx:id="blockNo" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" prefHeight="25.0" prefWidth="50.0" promptText="N10" GridPane.columnIndex="1" />
+                        <TextField fx:id="blockNo" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" prefHeight="25.0" prefWidth="50.0" promptText="5" GridPane.columnIndex="1" />
                      </children>
                   </GridPane>
                   <GridPane GridPane.rowIndex="2">
@@ -89,7 +89,7 @@
                       <RowConstraints maxHeight="18.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <CheckBox fx:id="isInternal" mnemonicParsing="false" text="INTERNAL OPERATION" GridPane.halignment="CENTER" />
+                        <CheckBox fx:id="isInternal" mnemonicParsing="false" prefHeight="18.0" prefWidth="204.0" text="INTERNAL OPERATION" underline="true" GridPane.halignment="CENTER" />
                      </children>
                   </GridPane>
                </children>
@@ -97,7 +97,10 @@
          </children></AnchorPane>
     <AnchorPane maxHeight="576.0" maxWidth="498.0" minHeight="576.0" minWidth="0.0" prefHeight="576.0" prefWidth="498.0" SplitPane.resizableWithParent="false">
          <children>
-            <TextArea fx:id="textArea" maxHeight="576.0" maxWidth="498.0" minHeight="576.0" minWidth="498.0" prefHeight="576.0" prefWidth="498.0" />
+            <TextArea fx:id="textArea" maxHeight="576.0" maxWidth="498.0" minHeight="576.0" minWidth="498.0" prefHeight="576.0" prefWidth="498.0">
+               <font>
+                  <Font size="20.0" />
+               </font></TextArea>
          </children></AnchorPane>
   </items>
 </SplitPane>
