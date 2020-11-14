@@ -35,14 +35,19 @@ public class ProcessNCFile {
         return gCodeList;
     }
 
-    public List<String> extractOP(List<String> gCode, TextField opBlocNo){
+    public List<String> extractOP(TextField textField){
+        String blockNo = stringifyBlockNo(textField);
+        if (!checkIfBlockExists(textField) || blockNo.isEmpty()){
+            return gcList;
+        }
+
         int opStart = 0;
         int opEnd = 0;
-        for (int i = 0; i < gCode.size(); i++) {
-            if (gCode.get(i).contains("N" + opBlocNo.getText()) || gCode.get(i).contains(opBlocNo.getText().toUpperCase())) {
+        for (int i = 0; i < gcList.size(); i++) {
+            if (gcList.get(i).contains(blockNo)) {
                 opStart = i;
-                for (int j = opStart; j < gCode.size(); j++) {
-                    if (gCode.get(j).contains("M1") || gCode.get(j).contains("M01")){
+                for (int j = opStart; j < gcList.size(); j++) {
+                    if (gcList.get(j).contains("M1") || gcList.get(j).contains("M01")){
                         opEnd = j;
                         break;
                     }
@@ -50,12 +55,16 @@ public class ProcessNCFile {
                 break;
             }
         }
-        return gCode.subList(opStart, opEnd + 1);
+        return gcList.subList(opStart, opEnd + 1);
     }
 
-    public boolean checkIfBlockExists(TextField opBlocNo){
+    public boolean checkIfBlockExists(TextField textField){
+        String blockNo = stringifyBlockNo(textField);
+        if (blockNo.isEmpty()){
+            return false;
+        }
         for (int j = 0; j < gcList.size(); j++) {
-            if (gcList.get(j).contains("N" + opBlocNo) || gcList.get(j).contains(opBlocNo.getText().toUpperCase())){
+            if (gcList.get(j).contains(blockNo)){
                 return true;
             }
         }
@@ -64,5 +73,16 @@ public class ProcessNCFile {
 
     public List<String> getGcList() {
         return gcList;
+    }
+
+    private String stringifyBlockNo(TextField text){
+        String blockNo = text.getText().toUpperCase();
+        if (!blockNo.matches((".*\\d.*"))){
+            return "";
+        }
+        if (!blockNo.contains("N")){
+            blockNo = "N" + blockNo;
+        }
+        return  blockNo;
     }
 }

@@ -28,7 +28,7 @@ public class Controller {
     public void procFile(File ncFile){
         ProcessNCFile proc = new ProcessNCFile(ncFile);
         printToTextArea(proc.getGcList());
-        this.processedNcFile = proc;
+        processedNcFile = proc;
 
     }
 
@@ -42,10 +42,9 @@ public class Controller {
 
 
     public void printOP(KeyEvent keyEvent) {
-        if (this.processedNcFile != null) {
-           List<String> gcList = processedNcFile.getGcList();
+        if (processedNcFile != null) {
            if (processedNcFile.checkIfBlockExists(blockNo)){
-               printToTextArea(processedNcFile.extractOP(gcList, blockNo));
+               printToTextArea(processedNcFile.extractOP(blockNo));
            }
         }
     }
