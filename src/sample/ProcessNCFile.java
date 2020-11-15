@@ -1,3 +1,4 @@
+
 package sample;
 
 
@@ -8,6 +9,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ProcessNCFile {
@@ -26,7 +28,7 @@ public class ProcessNCFile {
             reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
             String line = null;
             while ( (line = reader.readLine()) != null) {
-                    gCodeList.add(line);
+                gCodeList.add(line);
             }
             reader.close();
         } catch (IOException e) {
@@ -38,16 +40,17 @@ public class ProcessNCFile {
     public List<String> extractOP(TextField textField){
         String blockNo = stringifyBlockNo(textField);
         if (!checkIfBlockExists(textField) || blockNo.isEmpty()){
-            return gcList;
+            return Collections.emptyList();
         }
-
         int opStart = 0;
         int opEnd = 0;
         for (int i = 0; i < gcList.size(); i++) {
-            if (gcList.get(i).contains(blockNo)) {
+            String iBlock = gcList.get(i);
+            if (iBlock.contains(blockNo)) {
                 opStart = i;
                 for (int j = opStart; j < gcList.size(); j++) {
-                    if (gcList.get(j).contains("M1") || gcList.get(j).contains("M01")){
+                    String jBlock = gcList.get(j);
+                    if (jBlock.contains("M1") || jBlock.contains("M01")){
                         opEnd = j;
                         break;
                     }
@@ -71,10 +74,6 @@ public class ProcessNCFile {
         return false;
     }
 
-    public List<String> getGcList() {
-        return gcList;
-    }
-
     private String stringifyBlockNo(TextField text){
         String blockNo = text.getText().toUpperCase();
         if (!blockNo.matches((".*\\d.*"))){
@@ -84,5 +83,9 @@ public class ProcessNCFile {
             blockNo = "N" + blockNo;
         }
         return  blockNo;
+    }
+
+    public List<String> getGcList() {
+        return gcList;
     }
 }

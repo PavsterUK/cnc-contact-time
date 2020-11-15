@@ -1,38 +1,24 @@
 package sample;
 
-import java.util.List;
 
 public class CycleMachiningData {
 
-    private List<String> cncOP;
-    private int maxSpinSpeed;
-    private int surfaceSpeed;
 
 
-
-    public CycleMachiningData(List<String> cncOperation){
-        this.cncOP = cncOperation;
-        getFieldData();
-    }
-
-    public void getFieldData(){
-
-    }
-
-    private int getSurfaceSpeed(String cncBlock){
-        String surfaceSpeed = "";
-        if (cncBlock.contains("G96")){
-            int index = cncBlock.indexOf('S');
-            for (int i = index; i < cncBlock.length() ; i++) {
-                if (Character.isDigit(cncBlock.charAt(i))){
-                    surfaceSpeed += cncBlock.charAt(i);
-                }
-                else{
-                    return Integer.parseInt(surfaceSpeed);
+    public int getGcodeValue(String cncBlock, String code, char ch ){
+        String value = "";
+        if (cncBlock.contains(code)){
+            int index = cncBlock.indexOf(ch);
+            for (int i = index + 1; i < cncBlock.length() ; i++) {
+                if (Character.isDigit(cncBlock.charAt(i))) {
+                    value += cncBlock.charAt(i);
+                } else{
+                    break;
                 }
             }
+            if (!value.isEmpty()) return Integer.parseInt(value);
         }
-    return -1;
+        return -1;
     }
 
 }

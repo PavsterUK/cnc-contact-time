@@ -41,7 +41,7 @@
                         </CheckBox>
                      </children>
                   </GridPane>
-                  <Button fx:id="calculate" mnemonicParsing="false" prefHeight="126.0" prefWidth="249.0" text="ADD BREAKPOINTS" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Button fx:id="calculate" mnemonicParsing="false" onAction="#calculate" prefHeight="126.0" prefWidth="249.0" text="ADD BREAKPOINTS" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>

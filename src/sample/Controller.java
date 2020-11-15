@@ -46,8 +46,18 @@ public class Controller {
            if (processedNcFile.checkIfBlockExists(blockNo)){
                printToTextArea(processedNcFile.extractOP(blockNo));
            }
+           else {
+               printToTextArea(processedNcFile.getGcList());
+           }
         }
     }
+
+    public void calculate(ActionEvent actionEvent) {
+        CalculateBreakPoints calculateBreakPoints = new CalculateBreakPoints();
+        calculateBreakPoints.test();
+    }
+
+
 }
 
 
