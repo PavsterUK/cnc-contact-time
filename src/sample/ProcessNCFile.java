@@ -63,17 +63,16 @@ public class ProcessNCFile {
 
     public boolean checkIfBlockExists(TextField textField){
         String blockNo = stringifyBlockNo(textField);
-        if (blockNo.isEmpty()){
-            return false;
-        }
-        for (int j = 0; j < gcList.size(); j++) {
-            if (gcList.get(j).contains(blockNo)){
+        if (blockNo.isEmpty()) return false;
+        for (String s : gcList) {
+            if (s.contains(blockNo)) {
                 return true;
             }
         }
         return false;
     }
 
+    // Turn user input block No to string, return "" if no
     private String stringifyBlockNo(TextField text){
         String blockNo = text.getText().toUpperCase();
         if (!blockNo.matches((".*\\d.*"))){

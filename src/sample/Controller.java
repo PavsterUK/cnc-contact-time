@@ -53,8 +53,9 @@ public class Controller {
     }
 
     public void calculate(ActionEvent actionEvent) {
-        CalculateBreakPoints calculateBreakPoints = new CalculateBreakPoints();
-        calculateBreakPoints.test();
+        if (processedNcFile == null) return;
+        CalculateBreakPoints calculateBreakPoints = new CalculateBreakPoints(processedNcFile.extractOP(blockNo));
+
     }
 
 
