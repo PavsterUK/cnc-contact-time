@@ -3,7 +3,7 @@ package sample;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CalculateBreakPoints {
+public class ExtractMachiningData {
 
     private int G50; //Maximum RPM cap
     private int G96; // Tool surface speed (Vc)
@@ -12,7 +12,7 @@ public class CalculateBreakPoints {
     private int currRPM; // Current RPM
     private List<String> operation; // Operation Cycle list
 
-    public CalculateBreakPoints(List<String> operation){
+    public ExtractMachiningData(List<String> operation){
         this.operation = operation;
     }
 
@@ -21,36 +21,20 @@ public class CalculateBreakPoints {
         currRPM = (int) ((G96 * 1000) / (x * Math.PI));
     }
 
-    public void getNCData(){
+    public void makeBlockObjectList(){
         int lg = operation.size();
-        String currrentModal = "No_Modal_Assigned";
-        List<Float> RapidZmovements = new ArrayList<>();
-        List<Float> InterpolZmovements = new ArrayList<>();
-        List<Float> RapidXmovements = new ArrayList<>();
-        List<Float> InterpolXmovements = new ArrayList<>();
+        List<BlockObject> commandList = new ArrayList<>();
+        String currrentModal = "notSet";
         for (int i = 0; i < lg; i++) {
             String block = operation.get(i);
-            currrentModal = getModal(block, currrentModal);
             if (block.contains("G50")) G50 = (int) getGcodeValue(block, "G50", 'S');
             if (block.contains("G96")) G96 = (int) getGcodeValue(block, "G96", 'S');
             if (block.contains("G97")) currRPM = (int) getGcodeValue(block, "G96", 'S');
             if (block.contains("F")) Feed = getGcodeValue(block, "F", 'F');
-
-            if (block.contains("G0") || block.contains("G00") || currrentModal.equals("G0")) {
-                currrentModal = "G0";
-                if (block.contains("Z")) RapidZmovements.add(getGcodeValue(block, "Z", 'Z'));
-                if (block.contains("X")) RapidXmovements.add(getGcodeValue(block, "X", 'X'));
-            }
-            if (block.contains("G1") || block.contains("G01") || currrentModal.equals("G1")) {
-                currrentModal = "G1";
-                if (block.contains("Z")) InterpolZmovements.add(getGcodeValue(block, "Z", 'Z'));
-                if (block.contains("X")) InterpolXmovements.add(getGcodeValue(block, "X", 'X'));
-            }
+            currrentModal = getModal(block, currrentModal);
+            commandList.add(i, new BlockObject(block, currrentModal));
         }
-        System.out.println("Rapid Z --> " + RapidZmovements);
-        System.out.println("Rapid X --> " + RapidXmovements);
-        System.out.println("Feed Z --> " + InterpolZmovements);
-        System.out.println("Feed X --> " + InterpolXmovements);
+        System.out.println(commandList.toString());
 
     }
 
@@ -68,9 +52,10 @@ public class CalculateBreakPoints {
             }
             if (!value.isEmpty()) return Float.parseFloat(value);
         }
-        return -1;
+        return -0.001f;
     }
 
+    // Find what is curren modal code, G1 or G0
     private String getModal(String block, String currentModal){
         if (block.contains("G0") || block.contains("G00")){
             return "G0";
@@ -79,8 +64,6 @@ public class CalculateBreakPoints {
         }
         return currentModal;
     }
-
-
 
     public void test(){
         double elapsedTime = 0;
