@@ -55,7 +55,7 @@ public class Controller {
     public void calculate(ActionEvent actionEvent) {
         if (processedNcFile == null) return;
         ExtractMachiningData calc = new ExtractMachiningData(processedNcFile.extractOP(blockNo));
-        calc.makeBlockObjectList();
+        StringBuilder st = new StringBuilder("PAVEL");
 
     }
 
