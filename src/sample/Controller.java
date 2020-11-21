@@ -56,6 +56,7 @@ public class Controller {
         if (processedNcFile == null) return;
         ExtractMachiningData calc = new ExtractMachiningData(processedNcFile.extractOP(blockNo));
         StringBuilder st = new StringBuilder("PAVEL");
+        System.out.println(Float.NaN);
 
     }
 
