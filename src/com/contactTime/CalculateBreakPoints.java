@@ -1,4 +1,4 @@
-package sample;
+package com.contactTime;
 
 public class CalculateBreakPoints {
     private int currRPM;
@@ -19,6 +19,7 @@ public class CalculateBreakPoints {
             elapsedTime += time_per_1mm * 60;
             System.out.println(String.format(i + "mm DIA  --> " + currRPM + " RPM --> " + (currRPM * 0.2) + "mm/min --> " + "%.3f" + " seconds" + " (time per 1mm %.3f secs", elapsedTime, time_per_1mm * 60)  );
         }
-
     }
+
+
 }

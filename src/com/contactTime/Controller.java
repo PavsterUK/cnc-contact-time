@@ -1,4 +1,4 @@
-package sample;
+package com.contactTime;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,6 +8,7 @@ import javafx.scene.input.KeyEvent;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
@@ -27,7 +28,7 @@ public class Controller {
 
     public void procFile(File ncFile){
         ProcessNCFile proc = new ProcessNCFile(ncFile);
-        printToTextArea(proc.getGcList());
+        printToTextArea(proc.getGCLIST());
         processedNcFile = proc;
 
     }
@@ -47,17 +48,24 @@ public class Controller {
                printToTextArea(processedNcFile.extractOP(blockNo));
            }
            else {
-               printToTextArea(processedNcFile.getGcList());
+               printToTextArea(processedNcFile.getGCLIST());
            }
         }
     }
 
     public void calculate(ActionEvent actionEvent) {
         if (processedNcFile == null) return;
-        ExtractMachiningData calc = new ExtractMachiningData(processedNcFile.extractOP(blockNo));
-        StringBuilder st = new StringBuilder("PAVEL");
-        System.out.println(Float.NaN);
-
+        GetBlockObjectList getBlockObjectList = new GetBlockObjectList(processedNcFile.extractOP(blockNo));
+        List<BlockObject> boList = getBlockObjectList.getBlockObjectList();
+        int bno = 0;
+        for (BlockObject bo : boList){
+            System.out.println("Block no :" + bno);
+            System.out.println("axis moved :" + bo.getAXIS_MOVED().toString());
+            System.out.println("is rapid " + bo.isRapidMovement());
+            System.out.println("is motion " + bo.isMotion());
+            System.out.println("------------------------------------------------");
+            bno++;
+        }
     }
 
 
