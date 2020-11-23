@@ -5,10 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-
-import javax.swing.*;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
@@ -16,26 +12,19 @@ public class Controller {
     @FXML TextArea textArea;
     @FXML TextField blockNo;
     ProcessNCFile processedNcFile;
+    List<BlockObject> blockObjectsList;
 
 
     public void ChooseFilePressed(ActionEvent actionEvent) {
-        JFileChooser chooser = new JFileChooser();
-        int returnVal = chooser.showOpenDialog(null);
-        if(returnVal == JFileChooser.APPROVE_OPTION) {
-            procFile(chooser.getSelectedFile());
-        }
-    }
-
-    public void procFile(File ncFile){
-        ProcessNCFile proc = new ProcessNCFile(ncFile);
-        printToTextArea(proc.getGCLIST());
+        ProcessNCFile proc = new ProcessNCFile();
+        printToTextArea(proc.getNcList());
         processedNcFile = proc;
-
     }
 
-    public void printToTextArea(List<String> ncCode){
+
+    public void printToTextArea(List<String> ncList){
         String output = "";
-        for (String line : ncCode){
+        for (String line : ncList){
             output += line + "\n";
         }
         textArea.setText(output);
@@ -45,27 +34,20 @@ public class Controller {
     public void printOP(KeyEvent keyEvent) {
         if (processedNcFile != null) {
            if (processedNcFile.checkIfBlockExists(blockNo)){
-               printToTextArea(processedNcFile.extractOP(blockNo));
+               List<String> op = processedNcFile.extractOP(blockNo);
+               blockObjectsList = new GetNCData(op).getBlockObjectList();
+               printToTextArea(op);
            }
            else {
-               printToTextArea(processedNcFile.getGCLIST());
+               printToTextArea(processedNcFile.getNcList());
            }
         }
     }
 
     public void calculate(ActionEvent actionEvent) {
         if (processedNcFile == null) return;
-        GetBlockObjectList getBlockObjectList = new GetBlockObjectList(processedNcFile.extractOP(blockNo));
-        List<BlockObject> boList = getBlockObjectList.getBlockObjectList();
-        int bno = 0;
-        for (BlockObject bo : boList){
-            System.out.println("Block no :" + bno);
-            System.out.println("axis moved :" + bo.getAXIS_MOVED().toString());
-            System.out.println("is rapid " + bo.isRapidMovement());
-            System.out.println("is motion " + bo.isMotion());
-            System.out.println("------------------------------------------------");
-            bno++;
-        }
+        getContactTime gc = new getContactTime(blockObjectsList);
+        gc.Calculate();
     }
 
 

@@ -4,6 +4,7 @@ package com.contactTime;
 
 import javafx.scene.control.TextField;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -13,19 +14,29 @@ import java.util.Collections;
 import java.util.List;
 
 public class ProcessNCFile {
-    private final File FILE;
-    private final List<String> GCLIST; // GCode File as List of Strings
 
-    public ProcessNCFile(File file) {
-        this.FILE = file;
-        this.GCLIST = makeStringList();
+    private File file;
+    private List<String> ncList; // File as List of Strings
+
+    public ProcessNCFile() {
+        chooseFile();
+    }
+
+    private void chooseFile(){
+        JFileChooser chooser = new JFileChooser();
+        int returnVal = chooser.showOpenDialog(null);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            this.file = chooser.getSelectedFile();
+            this.ncList = makeStringList();
+        }
+
     }
 
     private List<String> makeStringList(){
         List<String> gCodeList = new ArrayList<>();
         BufferedReader reader;
         try {
-            reader = new BufferedReader(new FileReader(FILE.getAbsolutePath()));
+            reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
             String line = null;
             while ( (line = reader.readLine()) != null) {
                 gCodeList.add(line);
@@ -44,12 +55,12 @@ public class ProcessNCFile {
         }
         int opStart = 0;
         int opEnd = 0;
-        for (int i = 0; i < GCLIST.size(); i++) {
-            String iBlock = GCLIST.get(i);
+        for (int i = 0; i < ncList.size(); i++) {
+            String iBlock = ncList.get(i);
             if (iBlock.contains(blockNo)) {
                 opStart = i;
-                for (int j = opStart; j < GCLIST.size(); j++) {
-                    String jBlock = GCLIST.get(j);
+                for (int j = opStart; j < ncList.size(); j++) {
+                    String jBlock = ncList.get(j);
                     if (jBlock.contains("M1") || jBlock.contains("M01")){
                         opEnd = j;
                         break;
@@ -58,13 +69,13 @@ public class ProcessNCFile {
                 break;
             }
         }
-        return GCLIST.subList(opStart, opEnd + 1);
+        return ncList.subList(opStart, opEnd + 1);
     }
 
     public boolean checkIfBlockExists(TextField textField){
         String blockNo = stringifyBlockNo(textField);
         if (blockNo.isEmpty()) return false;
-        for (String s : GCLIST) {
+        for (String s : ncList) {
             if (s.contains(blockNo)) {
                 return true;
             }
@@ -84,7 +95,7 @@ public class ProcessNCFile {
         return  blockNo;
     }
 
-    public List<String> getGCLIST() {
-        return GCLIST;
+    public List<String> getNcList() {
+        return ncList;
     }
 }

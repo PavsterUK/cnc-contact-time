@@ -2,23 +2,7 @@ package com.contactTime;
 
 import java.util.ArrayList;
 
-public class BlockObject extends GetBlockObjectList {
-
-    public int getG50() {
-        return G50;
-    }
-
-    public int getG96() {
-        return G96;
-    }
-
-    public float getFEED() {
-        return FEED;
-    }
-
-    public String getBLOCK() {
-        return BLOCK;
-    }
+public class BlockObject {
 
     public boolean isMotion() {
         return isMotion;
@@ -54,7 +38,21 @@ public class BlockObject extends GetBlockObjectList {
             isRapidMovement = true;
     }
 
+    public int getG50() {
+        return G50;
+    }
 
+    public int getG96() {
+        return G96;
+    }
+
+    public float getFEED() {
+        return FEED;
+    }
+
+    public String getBLOCK() {
+        return BLOCK;
+    }
 
 
 }

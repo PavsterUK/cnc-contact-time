@@ -3,17 +3,17 @@ package com.contactTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetBlockObjectList {
+public class GetNCData {
 
     private int G50 = 0; //Maximum RPM cap
     private int G96 = 0; // Tool surface speed (Vc)
     private float Feed = 0; // Current feedrate
     private List<String> OP; // Operation as list of Strings
 
-    public GetBlockObjectList(List<String> operation){
+    public GetNCData(List<String> operation){
         this.OP = operation;
     }
-    public GetBlockObjectList(){};
+    public GetNCData(){};
 
 
     public List<BlockObject> getBlockObjectList(){
@@ -22,9 +22,9 @@ public class GetBlockObjectList {
         for (int i = 0; i < OP.size(); i++) {
             String block = OP.get(i);
             currrentModal = getModal(block, currrentModal);
-            if (block.contains("G50")) G50 = (int) getGcodeValue(block, "G50", 'S');
-            if (block.contains("G96")) G96 = (int) getGcodeValue(block, "G96", 'S');
-            if (block.contains("F")) Feed = getGcodeValue(block, "F", 'F');
+            if (block.contains("G50")) G50 = (int) getGcodeValue(block, "G50", "S");
+            if (block.contains("G96")) G96 = (int) getGcodeValue(block, "G96", "S");
+            if (block.contains("F")) Feed = getGcodeValue(block, "F", "F");
             ArrayList<String> axisMoved = containsAxisMove(block);
             blockObjectList.add(i, new BlockObject(block, G50, G96, Feed, axisMoved, currrentModal));
         }
@@ -41,8 +41,7 @@ public class GetBlockObjectList {
         return currentModal;
     }
 
-    // Get value of GCode
-    public float getGcodeValue(String cncBlock, String code, char ch ){
+    public float getGcodeValue(String cncBlock, String code, String ch ){
         String value = "";
         if (cncBlock.contains(code)){
             int index = cncBlock.indexOf(ch);
@@ -56,11 +55,11 @@ public class GetBlockObjectList {
             if (!value.isEmpty())
                 return Float.parseFloat(value);
         }
-        return -999999f; // Returns -999999f is no data found
+        return 999999f; // Returns 999999f is no data found
     }
 
     // Return an array of moved axis
-    public ArrayList<String> containsAxisMove(String block){
+    private ArrayList<String> containsAxisMove(String block){
         ArrayList<String> axisMoved = new ArrayList<>(0);
         if (block.contains("Z") && !block.contains("(")){
             axisMoved.add("Z");
