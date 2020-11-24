@@ -46,8 +46,8 @@ public class Controller {
 
     public void calculate(ActionEvent actionEvent) {
         if (processedNcFile == null) return;
-        getContactTime gc = new getContactTime(blockObjectsList);
-        gc.Calculate();
+        getContactTime gc = new getContactTime(blockObjectsList, 15f);
+        gc.TrackContactTime();
     }
 
 
