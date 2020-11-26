@@ -30,10 +30,18 @@ public class getContactTime extends GetNCData {
                 int rpm = getRPM(xStart, block.getG96(), block.getG50());
                 float timePerBlock = getTime(zStart, zEnd, rpm, block.getFEED());
 
-                if ((totalContactTime + timePerBlock) > ALLOWED_CONTACT_TIME && !block.getAXIS_MOVED().contains("X")){
+                if ((timePerBlock + totalContactTime) > ALLOWED_CONTACT_TIME && !block.getAXIS_MOVED().contains("X")){
                     float contactTimeLeft = ALLOWED_CONTACT_TIME - totalContactTime;
-                    float zRemainingContactDistance = secToMill(contactTimeLeft, rpm, block.getFEED());
-                    finalNC.add(safeReturn(true, zRemainingContactDistance, xStart));
+                    if (contactTimeLeft > 0) {
+                        float zRemainingContactDistance = secToMill(contactTimeLeft, rpm, block.getFEED());
+                        finalNC.add(safeReturn(true, (zStart - zRemainingContactDistance), xStart));
+                        totalContactTime = timePerBlock - zRemainingContactDistance;
+                    } else {
+                       finalNC.add(safeReturn(true, zStart, xStart));
+                       totalContactTime = 0;
+                    }
+                } else {
+                    totalContactTime += timePerBlock;
                 }
             }
             finalNC.add(block.getBLOCK());
@@ -50,21 +58,21 @@ public class getContactTime extends GetNCData {
 
     }
 
-    private float axisPrevCoord(int index, String axis){
-        float axs = 99999;
-        for (int i = index - 1; i > 0 ; i--) {
+    private float axisPrevCoord(int blocIndex, String axis){
+        float prevCoor = 99999;
+        for (int i = blocIndex - 1; i > 0 ; i--) {
             BlockObject block = NCLIST.get(i);
             if (block.getAXIS_MOVED().contains(axis)){
-                axs = getGcodeValue(block.getBLOCK(), axis, axis);
-                return axs;
+                prevCoor = getGcodeValue(block.getBLOCK(), axis, axis);
+                return prevCoor;
             }
         }
-        return axs;
+        return prevCoor;
     }
 
     private int getRPM(float x, int ss, int g50){
         int rpm = (int) ((ss * 1000) / (x * Math.PI));
-        return (rpm > g50) ? g50 : rpm;
+        return Math.min(rpm, g50);
     }
 
     private float getAbsolute(float i){
@@ -80,13 +88,15 @@ public class getContactTime extends GetNCData {
         String safeLeadOut = "W2.U4.";
         if (!isExternal) safeLeadOut = "W2.U-4.";
 
-        String result = "Z" + ZinitialCoord + "\n";
-        result += safeLeadOut + "\n" +
-        "G0X" + X_SAFE_STOP + "\n" + "G0Z" + Z_SAFE_STOP +
-        "M00" + "\n" + "(CHANGE EDGE)" + "\n" +
-        "G0" + (ZinitialCoord + 4.0) + "\n" +
-        "X" + (xCoord + 4.0) + "\n" +
-        "G1" + (ZinitialCoord + 2) + "X" + xCoord;
+        String result = "G1Z" + ZinitialCoord + "\n";
+        result += safeLeadOut + "\n";
+        result += "G0X" + X_SAFE_STOP + "\n";
+        result += "G0Z" + Z_SAFE_STOP + "\n";
+        result += "\n" + "M00" + "\n";
+        result += "(CHANGE EDGE)" + "\n" + "\n";
+        result += "G0Z" + (ZinitialCoord + 4.0) + "\n";
+        result += "X" + (xCoord + 4.0) + "\n";
+        result += "G1Z" + (ZinitialCoord + 2.0) + "X" + xCoord;
         return result;
     }
 
