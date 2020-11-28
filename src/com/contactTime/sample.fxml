@@ -19,9 +19,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="selectFile" mnemonicParsing="false" onAction="#ChooseFilePressed" prefHeight="82.0" prefWidth="296.0" text="SELECT NC FILE">
+                  <Button fx:id="selectFile" mnemonicParsing="false" onAction="#ChooseFilePressed" prefHeight="61.0" prefWidth="249.0" text="SELECT NC FILE">
                      <font>
-                        <Font name="System Bold" size="19.0" />
+                        <Font size="19.0" />
                      </font></Button>
                   <GridPane GridPane.columnIndex="1">
                     <columnConstraints>
@@ -34,14 +34,10 @@
                       <RowConstraints maxHeight="17.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <CheckBox fx:id="isOverwrite" mnemonicParsing="false" prefHeight="34.0" prefWidth="217.0" text="Overwrite NC File" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </CheckBox>
+                        <Button mnemonicParsing="false" onAction="#applyToNC" prefHeight="0.0" prefWidth="178.0" text="Apply changes to NC FIle" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
                      </children>
                   </GridPane>
-                  <Button fx:id="calculate" mnemonicParsing="false" onAction="#calculate" prefHeight="126.0" prefWidth="249.0" text="ADD BREAKPOINTS" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Button fx:id="calculate" mnemonicParsing="false" onAction="#calculate" prefHeight="56.0" prefWidth="249.0" text="CALCULATE !" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -57,8 +53,10 @@
                       <RowConstraints maxHeight="18.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="OPERATION BLOCK Nr : " GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
-                        <TextField fx:id="blockNo" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" onKeyTyped="#printOP" prefHeight="25.0" prefWidth="50.0" promptText="5" GridPane.columnIndex="1" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="CYCLE BLOCK No. " GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+                        <TextField fx:id="blockNo" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" onKeyTyped="#printOP" prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="1" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="TIP CONTACT TIME " GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <TextField fx:id="contactTime" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                   <GridPane GridPane.rowIndex="2">
@@ -72,10 +70,10 @@
                       <RowConstraints maxHeight="18.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="APPX. CONTACT TIME : " GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="M00 Z POSITION : " GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <TextField fx:id="contactTime" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" prefHeight="25.0" prefWidth="50.0" promptText="min" GridPane.columnIndex="1" />
-                        <TextField fx:id="zRapidPos" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" prefHeight="25.0" prefWidth="50.0" promptText="50." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="M00 X COORD. " GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="M00 Z COORD. " GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <TextField maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="1" fx:id="xRapidPos" />
+                        <TextField fx:id="zRapidPos" maxHeight="25.0" maxWidth="50.0" minHeight="25.0" minWidth="50.0" prefHeight="25.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                   <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -89,7 +87,10 @@
                       <RowConstraints maxHeight="18.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <CheckBox fx:id="isInternal" mnemonicParsing="false" prefHeight="18.0" prefWidth="204.0" text="INTERNAL OPERATION" underline="true" GridPane.halignment="CENTER" />
+                        <CheckBox fx:id="isInternal" mnemonicParsing="false" prefHeight="18.0" prefWidth="204.0" text="INTERNAL OPERATION" textFill="#fc0026" underline="true" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="Droid Sans Mono Dotted" size="13.0" />
+                           </font></CheckBox>
                      </children>
                   </GridPane>
                </children>
@@ -97,7 +98,7 @@
          </children></AnchorPane>
     <AnchorPane maxHeight="576.0" maxWidth="498.0" minHeight="576.0" minWidth="0.0" prefHeight="576.0" prefWidth="498.0" SplitPane.resizableWithParent="false">
          <children>
-            <TextArea fx:id="textArea" maxHeight="576.0" maxWidth="498.0" minHeight="576.0" minWidth="498.0" prefHeight="576.0" prefWidth="498.0">
+            <TextArea fx:id="displayArea" maxHeight="576.0" maxWidth="498.0" minHeight="576.0" minWidth="498.0" prefHeight="576.0" prefWidth="498.0">
                <font>
                   <Font size="20.0" />
                </font></TextArea>

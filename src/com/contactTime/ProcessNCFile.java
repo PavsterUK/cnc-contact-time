@@ -48,10 +48,10 @@ public class ProcessNCFile {
         return gCodeList;
     }
 
-    public List<String> extractOP(TextField textField){
-        String blockNo = stringifyBlockNo(textField);
-        if (!checkIfBlockExists(textField) || blockNo.isEmpty()){
-            return Collections.emptyList();
+    public List<String> extractOP(TextField blockN0){
+        String blockNo = stringifyBlockNo(blockN0);
+        if (!checkIfBlockExists(blockN0) || blockNo.isEmpty()){
+            return ncList;
         }
         int opStart = 0;
         int opEnd = 0;
@@ -93,6 +93,19 @@ public class ProcessNCFile {
             blockNo = "N" + blockNo;
         }
         return  blockNo;
+    }
+
+    public static List<String> overwriteOP(List<String> ncList, List<String> newOp, List<String> oldOp){
+        List<String> result = ncList;
+        String opAasString = "";
+        for (String s : newOp){
+            opAasString += s + "\n";
+        }
+        int firstIndex = Collections.indexOfSubList(ncList, oldOp);
+        int lastIndex = oldOp.size();
+        result.subList(firstIndex, lastIndex).clear();
+        result.add(firstIndex, opAasString);
+        return result;
     }
 
     public List<String> getNcList() {

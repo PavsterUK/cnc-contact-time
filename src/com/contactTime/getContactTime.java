@@ -10,12 +10,14 @@ public class getContactTime extends GetNCData {
     private List<String> output;
     private final float Z_SAFE_STOP;
     private final float X_SAFE_STOP;
+    private boolean isExternal;
 
-    public getContactTime(List<BlockObject> ncList, float reqConTime, float ZsafeSt, float XsafeSt) {
+    public getContactTime(List<BlockObject> ncList, float reqConTime, float ZsafeSt, float XsafeSt, boolean isExt) {
         this.Z_SAFE_STOP = ZsafeSt;
         this.X_SAFE_STOP = XsafeSt;
         this.NCLIST = ncList;
         ALLOWED_CONTACT_TIME = reqConTime * 60;
+        isExternal = isExt;
     }
 
     public void TrackContactTime(){
@@ -34,10 +36,10 @@ public class getContactTime extends GetNCData {
                     float contactTimeLeft = ALLOWED_CONTACT_TIME - totalContactTime;
                     if (contactTimeLeft > 0) {
                         float zRemainingContactDistance = secToMill(contactTimeLeft, rpm, block.getFEED());
-                        finalNC.add(safeReturn(true, (zStart - zRemainingContactDistance), xStart));
+                        finalNC.add(safeReturn((zStart - zRemainingContactDistance), xStart));
                         totalContactTime = timePerBlock - zRemainingContactDistance;
                     } else {
-                       finalNC.add(safeReturn(true, zStart, xStart));
+                       finalNC.add(safeReturn(zStart, xStart));
                        totalContactTime = 0;
                     }
                 } else {
@@ -46,9 +48,7 @@ public class getContactTime extends GetNCData {
             }
             finalNC.add(block.getBLOCK());
         }
-        for (String s : finalNC ){
-            System.out.println(s);
-        }
+        output = finalNC;
     }
 
     private float getTime(Float zStart, Float zEnd, int rpm, float feed){
@@ -84,22 +84,42 @@ public class getContactTime extends GetNCData {
         return seconds * mm_sec;
     }
 
-    private String safeReturn(boolean isExternal, float ZinitialCoord, float xCoord){
-        String safeLeadOut = "W2.U4.";
-        if (!isExternal) safeLeadOut = "W2.U-4.";
-
-        String result = "G1Z" + ZinitialCoord + "\n";
-        result += safeLeadOut + "\n";
-        result += "G0X" + X_SAFE_STOP + "\n";
-        result += "G0Z" + Z_SAFE_STOP + "\n";
+    private String safeReturn(float remCtDst, float xCoord){
+        int remainCutDist = Math.round(remCtDst);
+        String result = "G1Z" + remainCutDist + ".\n";
+        result += safeLeadOut();
         result += "\n" + "M00" + "\n";
         result += "(CHANGE EDGE)" + "\n" + "\n";
-        result += "G0Z" + (ZinitialCoord + 4.0) + "\n";
-        result += "X" + (xCoord + 4.0) + "\n";
-        result += "G1Z" + (ZinitialCoord + 2.0) + "X" + xCoord;
+        result += safeLeadIn(remainCutDist, xCoord);
         return result;
     }
 
 
+    private String safeLeadOut(){
+        String safeLeadOut = "W1.U2." + "\n";
+        safeLeadOut += "G0X" + X_SAFE_STOP + "\n";
+        safeLeadOut += "G0Z" + Z_SAFE_STOP + "\n";
+        if (!isExternal){
+            safeLeadOut = "W1.U-2." + "\n";
+            safeLeadOut += "G0Z" + Z_SAFE_STOP + "\n";
+            safeLeadOut += "G0X" + X_SAFE_STOP + "\n";
+        }
+        return safeLeadOut;
+    }
 
+    private String safeLeadIn(int zStartPos, float xStartPos){
+        String safeLeadIn = "G0Z" + (zStartPos + 2) + ".\n";
+        safeLeadIn += "G0X" + (xStartPos + 2) + ".\n";
+        safeLeadIn += "G1X" + xStartPos + "Z" + (zStartPos + 1) + ".";
+        if (!isExternal){
+            safeLeadIn = "G0X" + (xStartPos - 2) + ".\n";
+            safeLeadIn += "G0Z" + (zStartPos + 2) + ".\n";
+            safeLeadIn += "G1X" + xStartPos + "Z" + (zStartPos + 1) + ".";
+        }
+        return safeLeadIn;
+    }
+
+    public List<String> getOutput() {
+        return output;
+    }
 }

@@ -31,7 +31,7 @@ public class GetNCData {
         return blockObjectList;
     }
 
-    // Find what is curren modal code, G1 or G0
+    // Find curren modal code, G1 or G0
     private String getModal(String block, String currentModal){
         if ( (block.contains("G0") || block.contains("G00")) && !block.contains("(") ){
             return "G0";
