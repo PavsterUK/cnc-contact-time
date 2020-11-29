@@ -32,19 +32,27 @@ public class getContactTime extends GetNCData {
                 int rpm = getRPM(xStart, block.getG96(), block.getG50());
                 float timePerBlock = getTime(zStart, zEnd, rpm, block.getFEED());
 
-                if ((timePerBlock + totalContactTime) > ALLOWED_CONTACT_TIME && !block.getAXIS_MOVED().contains("X")){
-                    float contactTimeLeft = ALLOWED_CONTACT_TIME - totalContactTime;
-                    if (contactTimeLeft > 0) {
-                        float zRemainingContactDistance = secToMill(contactTimeLeft, rpm, block.getFEED());
-                        finalNC.add(safeReturn((zStart - zRemainingContactDistance), xStart));
-                        totalContactTime = timePerBlock - zRemainingContactDistance;
-                    } else {
-                       finalNC.add(safeReturn(zStart, xStart));
-                       totalContactTime = 0;
+                if (timePerBlock > ALLOWED_CONTACT_TIME && !block.getAXIS_MOVED().contains("X")){
+                    float remainingContactTime = ALLOWED_CONTACT_TIME - totalContactTime;
+                    float zRemainderDist_1 = secToMill(remainingContactTime, rpm, block.getFEED());
+                    finalNC.add(safeReturn((zRemainderDist_1 * -1), xStart));
+                    totalContactTime = 0;
+                    float remaindblockTime = timePerBlock - remainingContactTime;
+                    if (remaindblockTime > ALLOWED_CONTACT_TIME){
+                        float zRemainderDist_2 = secToMill(ALLOWED_CONTACT_TIME, rpm, block.getFEED());
+                        finalNC.add(safeReturn( (zRemainderDist_1 * -1) + (zRemainderDist_2 * -1) , xStart));
+                        totalContactTime = remaindblockTime - ALLOWED_CONTACT_TIME;
                     }
-                } else {
+                }else if (timePerBlock + totalContactTime > ALLOWED_CONTACT_TIME && !block.getAXIS_MOVED().contains("X")){
+                    float remainCOntactTime = ALLOWED_CONTACT_TIME - totalContactTime;
+                    float zRemainderDist = secToMill(remainCOntactTime, rpm, block.getFEED());
+                    finalNC.add(safeReturn((zRemainderDist * -1), xStart));
+                    totalContactTime = timePerBlock - remainCOntactTime;
+                }
+                else{
                     totalContactTime += timePerBlock;
                 }
+
             }
             finalNC.add(block.getBLOCK());
         }

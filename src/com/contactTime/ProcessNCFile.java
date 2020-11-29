@@ -65,7 +65,7 @@ public class ProcessNCFile {
                 opStart = i;
                 for (int j = opStart; j < ncList.size(); j++) {
                     String jBlock = ncList.get(j);
-                    if (jBlock.contains("M1") || jBlock.contains("M01")){
+                    if ( (jBlock.contains("M1") || jBlock.contains("M01")) && !jBlock.contains("(") ){
                         opEnd = j;
                         break;
                     }
@@ -100,17 +100,16 @@ public class ProcessNCFile {
     }
 
     public static List<String> overwriteNCFile(ProcessNCFile procFile, List<String> newOp, List<String> oldOp){
-        List<String> result = procFile.getNcList();
-        String opAsSingleString = "";
-        for (String s : newOp){
-            opAsSingleString += s + "\n";
-        }
-        int firstIndex = Collections.indexOfSubList(result, oldOp);
-        int lastIndex = oldOp.size();
-        result.subList(firstIndex, lastIndex).clear();
-        result.add(firstIndex, opAsSingleString);
-        result.add(0, "FILE " + procFile.getFile().getAbsolutePath() +" HAS BEEN SUCSSESFULLY OVERWRITTEN" + "\n" + "ENJOY!!!");
-        return result;
+       List<String> result = procFile.getNcList();
+//        String opAsSingleString = "";
+//        for (String s : newOp){
+//            opAsSingleString += s + "\n";
+//        }
+//        int firstIndex = Collections.indexOfSubList(result, oldOp);
+//        int lastIndex =
+//        result.subList(firstIndex, lastIndex ).clear();
+//
+       return result;
     }
 
     public List<String> getNcList() {
