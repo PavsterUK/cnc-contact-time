@@ -57,8 +57,8 @@ public class Controller {
         processedOp = gc.getOutput();
     }
 
-    public void applyToNC(ActionEvent actionEvent){
-       printToTextArea(ProcessNCFile.overwriteOP(processedNcFile.getNcList(), processedOp, processedNcFile.extractOP(blockNo)));
+    public void applyToNCFIle(ActionEvent actionEvent){
+       printToTextArea(ProcessNCFile.overwriteNCFile(processedNcFile, processedOp, processedNcFile.extractOP(blockNo)));
 
     }
 

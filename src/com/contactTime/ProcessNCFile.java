@@ -18,6 +18,10 @@ public class ProcessNCFile {
     private File file;
     private List<String> ncList; // File as List of Strings
 
+    public ProcessNCFile(File file){
+        this.file = file;
+    }
+
     public ProcessNCFile() {
         chooseFile();
     }
@@ -95,20 +99,25 @@ public class ProcessNCFile {
         return  blockNo;
     }
 
-    public static List<String> overwriteOP(List<String> ncList, List<String> newOp, List<String> oldOp){
-        List<String> result = ncList;
-        String opAasString = "";
+    public static List<String> overwriteNCFile(ProcessNCFile procFile, List<String> newOp, List<String> oldOp){
+        List<String> result = procFile.getNcList();
+        String opAsSingleString = "";
         for (String s : newOp){
-            opAasString += s + "\n";
+            opAsSingleString += s + "\n";
         }
-        int firstIndex = Collections.indexOfSubList(ncList, oldOp);
+        int firstIndex = Collections.indexOfSubList(result, oldOp);
         int lastIndex = oldOp.size();
         result.subList(firstIndex, lastIndex).clear();
-        result.add(firstIndex, opAasString);
+        result.add(firstIndex, opAsSingleString);
+        result.add(0, "FILE " + procFile.getFile().getAbsolutePath() +" HAS BEEN SUCSSESFULLY OVERWRITTEN" + "\n" + "ENJOY!!!");
         return result;
     }
 
     public List<String> getNcList() {
         return ncList;
+    }
+
+    public File getFile() {
+        return file;
     }
 }
