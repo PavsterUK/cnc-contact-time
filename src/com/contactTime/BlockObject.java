@@ -23,7 +23,7 @@ public class BlockObject {
 
     private boolean isMotion; // True is block contains motion commands
     private boolean isRapidMovement; // True if move is rapid G0 command
-    private final ArrayList<String> AXIS_MOVED;
+    private final ArrayList<String> AXIS_MOVED; //Contains array of axis engaged in motion
 
 
     public BlockObject(String block, int g50, int g96, float feed, ArrayList<String> axisMoved, String currModal) {

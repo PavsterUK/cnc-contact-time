@@ -5,7 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.List;
 
 public class Controller {
@@ -16,11 +21,17 @@ public class Controller {
     @FXML TextField zRapidPos;
     @FXML TextField xRapidPos;
     @FXML CheckBox isInternal;
+    @FXML ImageView imageView;
+
 
     ProcessNCFile processedNcFile;
     List<BlockObject> blockObjectsList;
     List<String> processedOp;
 
+    public void initialize(){
+        Image image = new Image(new File("/home/pavel/Desktop/cnc-contact-time/Images/image.png").toURI().toString());
+        imageView.setImage(image);
+    }
 
     public void ChooseFilePressed(ActionEvent actionEvent) {
         ProcessNCFile proc = new ProcessNCFile();
@@ -37,7 +48,7 @@ public class Controller {
         displayArea.setText(output);
     }
 
-    public void printOP(KeyEvent keyEvent) {
+    public void printOP(KeyEvent keyEvent) throws URISyntaxException {
         if (processedNcFile == null) return;
                List<String> op = processedNcFile.extractOP(blockNo);
                blockObjectsList = new GetNCData(op).getBlockObjectList();
@@ -45,12 +56,13 @@ public class Controller {
     }
 
     public void calculate(ActionEvent actionEvent) {
+        if (processedNcFile == null) return;
+
         float contTime = Float.parseFloat(contactTime.getText());
         float zRapidTo = Float.parseFloat(zRapidPos.getText());
         float xRapidTo = Float.parseFloat(xRapidPos.getText());
         boolean isExternal = !isInternal.isSelected();
 
-        if (processedNcFile == null) return;
         getContactTime gc = new getContactTime(blockObjectsList, contTime, zRapidTo, xRapidTo, isExternal);
         gc.TrackContactTime();
         printToTextArea(gc.getOutput());
@@ -58,7 +70,9 @@ public class Controller {
     }
 
     public void applyToNCFIle(ActionEvent actionEvent){
-       printToTextArea(ProcessNCFile.overwriteNCFile(processedNcFile, processedOp, processedNcFile.extractOP(blockNo)));
+        ProcessNCFile proc = processedNcFile;
+        List<String> updatedList = ProcessNCFile.replaceOpAndSaveFile(processedNcFile, processedOp, processedNcFile.extractOP(blockNo));
+        printToTextArea(updatedList);
 
     }
 

@@ -5,17 +5,17 @@ import java.util.List;
 
 public class getContactTime extends GetNCData {
 
-    private final List<BlockObject> NCLIST;
+    private final List<BlockObject> OP_OBJECT_LIST; // Operation Cycle as List of Block Objects
     private final float ALLOWED_CONTACT_TIME; //In seconds
     private List<String> output;
     private final float Z_SAFE_STOP;
     private final float X_SAFE_STOP;
     private boolean isExternal;
 
-    public getContactTime(List<BlockObject> ncList, float reqConTime, float ZsafeSt, float XsafeSt, boolean isExt) {
+    public getContactTime(List<BlockObject> OpObjectList, float reqConTime, float ZsafeSt, float XsafeSt, boolean isExt) {
         this.Z_SAFE_STOP = ZsafeSt;
         this.X_SAFE_STOP = XsafeSt;
-        this.NCLIST = ncList;
+        this.OP_OBJECT_LIST = OpObjectList;
         ALLOWED_CONTACT_TIME = reqConTime * 60;
         isExternal = isExt;
     }
@@ -23,8 +23,8 @@ public class getContactTime extends GetNCData {
     public void TrackContactTime(){
         float totalContactTime = 0f;
         List<String> finalNC = new ArrayList<>();
-        for (int i = 0; i < NCLIST.size(); i++) {
-            BlockObject block = NCLIST.get(i);
+        for (int i = 0; i < OP_OBJECT_LIST.size(); i++) {
+            BlockObject block = OP_OBJECT_LIST.get(i);
             if (!block.isRapidMovement() && block.isMotion() && block.getAXIS_MOVED().contains("Z")){
                 float xStart = axisPrevCoord(i, "X");
                 float zStart = axisPrevCoord(i, "Z");
@@ -69,7 +69,7 @@ public class getContactTime extends GetNCData {
     private float axisPrevCoord(int blocIndex, String axis){
         float prevCoor = 99999;
         for (int i = blocIndex - 1; i > 0 ; i--) {
-            BlockObject block = NCLIST.get(i);
+            BlockObject block = OP_OBJECT_LIST.get(i);
             if (block.getAXIS_MOVED().contains(axis)){
                 prevCoor = getGcodeValue(block.getBLOCK(), axis, axis);
                 return prevCoor;

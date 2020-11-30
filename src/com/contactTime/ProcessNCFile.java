@@ -20,6 +20,7 @@ public class ProcessNCFile {
 
     public ProcessNCFile(File file){
         this.file = file;
+        this.ncList = makeStringList();
     }
 
     public ProcessNCFile() {
@@ -98,18 +99,24 @@ public class ProcessNCFile {
         }
         return  blockNo;
     }
+    //Replace Operation
+    public static List<String> replaceOpAndSaveFile(ProcessNCFile procFile, List<String> newOp, List<String> oldOp){
+        List<String> ncList = procFile.getNcList();
+        int opStart = Collections.indexOfSubList(ncList, oldOp);
+        int opEnd = 0;
+        for (int i = opStart; i < ncList.size(); i++) {
+            String block = ncList.get(i);
+            if ( (block.contains("M1") || block.contains("M01")) && !block.contains("(") ){
+                opEnd = i;
+                break;
+            }
+        }
+        ncList.subList(opStart, opEnd + 1).clear();
+        for (int i = 0; i <newOp.size() ; i++) {
+            ncList.add(i + opStart, newOp.get(i));
+        }
 
-    public static List<String> overwriteNCFile(ProcessNCFile procFile, List<String> newOp, List<String> oldOp){
-       List<String> result = procFile.getNcList();
-//        String opAsSingleString = "";
-//        for (String s : newOp){
-//            opAsSingleString += s + "\n";
-//        }
-//        int firstIndex = Collections.indexOfSubList(result, oldOp);
-//        int lastIndex =
-//        result.subList(firstIndex, lastIndex ).clear();
-//
-       return result;
+        return ncList;
     }
 
     public List<String> getNcList() {
