@@ -32,9 +32,9 @@ To get Application running:
 
 Edit run.sh
 
-java --module-path /path/to/javafx/javafx-sdk-11.0.2/lib/ --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar cnc-contact-time.jar
+java --module-path **/path/to/javafx/javafx-sdk-11.0.2/lib/** --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar cnc-contact-time.jar
 
-Replace highlighted segment with path to your own javaFx/lib location.
+Replace path to your own javaFx/lib location.
 
 Then ./run.sh via terminal
 
@@ -42,9 +42,9 @@ Then ./run.sh via terminal
 
 Edit wrun.bat
 
-jjava --module-path "C:\\path\\to\\javafx-sdk-11.0.2\\lib" --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar cnc-contact-time.jar
+jjava --module-path **"C:\\path\\to\\javafx-sdk-11.0.2\\lib"** --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics -jar cnc-contact-time.jar
 
-Replace highlighted segment with path to your own javaFx/lib location.
+Replace path to your own javaFx/lib location.
 
 Then run wrun.bat
 
