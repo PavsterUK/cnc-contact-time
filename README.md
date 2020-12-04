@@ -56,6 +56,6 @@ Then run wrun.bat
 
 **Authors**
 
-\* All code is written by myself (PavsterUK) https://gist.github.com/PavsterUK
+\* All code is written by Pavel Naumovich https://gist.github.com/PavsterUK
 
-Big thanks to my shop floor manager Tony Dougray for techinical contribution of CNC domain knowledge.
+Big thanks to my shop floor manager Tony Dougray for some technical knowledge contribution.
