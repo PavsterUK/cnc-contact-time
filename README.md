@@ -6,7 +6,7 @@ With this application, you will be able to select <span id="anchor-1"></span>Wit
 
 It is for **CNC Turning only**. Application is able to take into consideration machining diameter and RPM limit(G50) in order to adapt to constant surface speed and RPM incease with smaller diameters.
 
-Getting Started
+*Getting Started*
 
 Download zip and locate ‘Jar Application’ folder. You will find executable jar file, sample cnc program, drawing jpeg, run.sh, wrun.bat files.
 
