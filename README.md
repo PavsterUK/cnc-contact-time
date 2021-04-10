@@ -2,7 +2,7 @@
 
 <span id="anchor"></span>All CNC machinists know that its very important to replace cutting tools regularly, particularly when working with hard materials such as “INCONEL 718”.
 
-With this application, you will be able to select <span id="anchor-1"></span>With this application, you will be able to select required operation and set time limit for tool to be in contact with material. After tool will reach <span id="anchor-2"></span>With this application, you will be able to select <span id="anchor-1"></span>With this application, you will be able to select required operation and set time limit for tool to be in contact with material. After tool will reach preset time, machine will stop and move to selected position for tool change/check.
+With this application, you will be able to choose required operation and set time limit for tool to be in contact with material. After tool will reach required time, machine will stop and move to selected position for tool change/check.
 
 It is for **CNC Turning only**. Application is able to take into consideration machining diameter and RPM limit(G50) in order to adapt to constant surface speed and RPM incease with smaller diameters.
 
