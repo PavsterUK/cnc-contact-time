@@ -1,6 +1,13 @@
-package com.contactTime;
+package com.contactime.domain;
 
 import java.util.ArrayList;
+
+/*
+Represents single g-code block where all
+information contained within this block is
+broken down into relevant cnc info.
+ */
+
 
 public class BlockObject {
 
@@ -16,10 +23,10 @@ public class BlockObject {
         return AXIS_MOVED;
     }
 
-    private final int G50; //Maximum RPM cap
-    private final int G96; // Tool surface speed (Vc)
-    private final float FEED; // Current feedrate
-    private final String BLOCK;
+    private final int g50; //Maximum RPM cap
+    private final int g96; // Tool surface speed (Vc)
+    private final float feed; // Current feedrate
+    private final String block; // Block of g-code
 
     private boolean isMotion; // True is block contains motion commands
     private boolean isRapidMovement; // True if move is rapid G0 command
@@ -27,10 +34,10 @@ public class BlockObject {
 
 
     public BlockObject(String block, int g50, int g96, float feed, ArrayList<String> axisMoved, String currModal) {
-        BLOCK = block;
-        G50 = g50;
-        G96 = g96;
-        FEED = feed;
+        this.block = block;
+        this.g50 = g50;
+        this.g96 = g96;
+        this.feed = feed;
         AXIS_MOVED = axisMoved;
         if (axisMoved.size() != 0)
             isMotion = true;
@@ -39,20 +46,19 @@ public class BlockObject {
     }
 
     public int getG50() {
-        return G50;
+        return g50;
     }
 
     public int getG96() {
-        return G96;
+        return g96;
     }
 
-    public float getFEED() {
-        return FEED;
+    public float getFeed() {
+        return feed;
     }
 
-    public String getBLOCK() {
-        return BLOCK;
+    public String getBlock() {
+        return block;
     }
-
 
 }

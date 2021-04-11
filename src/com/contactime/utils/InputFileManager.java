@@ -1,6 +1,5 @@
 
-package com.contactTime;
-
+package com.contactime.utils;
 
 import javafx.scene.control.TextField;
 
@@ -13,17 +12,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ProcessNCFile {
+public class InputFileManager {
 
     private File file;
     private List<String> ncList; // File as List of Strings
 
-    public ProcessNCFile(File file){
+    public InputFileManager(File file){
         this.file = file;
         this.ncList = makeStringList();
     }
 
-    public ProcessNCFile() {
+    public InputFileManager() {
         chooseFile();
     }
 
@@ -100,7 +99,7 @@ public class ProcessNCFile {
         return  blockNo;
     }
     //Replace Operation
-    public static List<String> replaceOpAndSaveFile(ProcessNCFile procFile, List<String> newOp, List<String> oldOp){
+    public static List<String> replaceOpAndSaveFile(InputFileManager procFile, List<String> newOp, List<String> oldOp){
         List<String> ncList = procFile.getNcList();
         int opStart = Collections.indexOfSubList(ncList, oldOp);
         int opEnd = 0;
