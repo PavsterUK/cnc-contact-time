@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<SplitPane dividerPositions="0.29431438127090304" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="800.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.contactTime.Controller">
+<SplitPane dividerPositions="0.29431438127090304" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="800.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.contactime.Controller">
   <items>
     <AnchorPane maxHeight="214.0" maxWidth="498.0" minHeight="214.0" minWidth="498.0" prefHeight="214.0" prefWidth="498.0" SplitPane.resizableWithParent="false">
          <children>

@@ -1,5 +1,9 @@
-package com.contactTime;
+package com.contactime;
 
+import com.contactime.domain.BlockObject;
+import com.contactime.domain.ContactTimeCalculator;
+import com.contactime.utils.NCDataParser;
+import com.contactime.utils.InputFileManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -24,17 +28,17 @@ public class Controller {
     @FXML ImageView imageView;
 
 
-    ProcessNCFile processedNcFile;
+    InputFileManager processedNcFile;
     List<BlockObject> blockObjectsList;
     List<String> processedOp;
 
     public void initialize(){
-        Image image = new Image(new File("/home/pavel/Desktop/cnc-contact-time/Images/image.png").toURI().toString());
+        Image image = new Image(new File("Images/image.png").toURI().toString());
         imageView.setImage(image);
     }
 
     public void ChooseFilePressed(ActionEvent actionEvent) {
-        ProcessNCFile proc = new ProcessNCFile();
+        InputFileManager proc = new InputFileManager();
         printToTextArea(proc.getNcList());
         processedNcFile = proc;
     }
@@ -51,7 +55,7 @@ public class Controller {
     public void printOP(KeyEvent keyEvent) throws URISyntaxException {
         if (processedNcFile == null) return;
                List<String> op = processedNcFile.extractOP(blockNo);
-               blockObjectsList = new GetNCData(op).getBlockObjectList();
+               blockObjectsList = new NCDataParser(op).getBlockObjectList();
                printToTextArea(op);
     }
 
@@ -63,15 +67,15 @@ public class Controller {
         float xRapidTo = Float.parseFloat(xRapidPos.getText());
         boolean isExternal = !isInternal.isSelected();
 
-        getContactTime gc = new getContactTime(blockObjectsList, contTime, zRapidTo, xRapidTo, isExternal);
+        ContactTimeCalculator gc = new ContactTimeCalculator(blockObjectsList, contTime, zRapidTo, xRapidTo, isExternal);
         gc.TrackContactTime();
         printToTextArea(gc.getOutput());
         processedOp = gc.getOutput();
     }
 
     public void applyToNCFIle(ActionEvent actionEvent){
-        ProcessNCFile proc = processedNcFile;
-        List<String> updatedList = ProcessNCFile.replaceOpAndSaveFile(processedNcFile, processedOp, processedNcFile.extractOP(blockNo));
+        InputFileManager proc = processedNcFile;
+        List<String> updatedList = InputFileManager.replaceOpAndSaveFile(processedNcFile, processedOp, processedNcFile.extractOP(blockNo));
         printToTextArea(updatedList);
 
     }

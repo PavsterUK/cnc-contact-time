@@ -1,19 +1,21 @@
-package com.contactTime;
+package com.contactime.utils;
+
+import com.contactime.domain.BlockObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetNCData {
+public class NCDataParser {
 
     private int G50 = 0; //Maximum RPM cap
     private int G96 = 0; // Tool surface speed (Vc)
     private float Feed = 0; // Current feedrate
     private List<String> OP; // Operation as list of Strings
 
-    public GetNCData(List<String> operation){
+    public NCDataParser(List<String> operation){
         this.OP = operation;
     }
-    public GetNCData(){};
+    public NCDataParser(){};
 
 
     public List<BlockObject> getBlockObjectList(){
@@ -31,7 +33,7 @@ public class GetNCData {
         return blockObjectList;
     }
 
-    // Find curren modal code, G1 or G0
+    // Find current modal code, G1 or G0
     private String getModal(String block, String currentModal){
         if ( (block.contains("G0") || block.contains("G00")) && !block.contains("(") ){
             return "G0";
